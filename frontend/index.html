@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AgentTrust AI coding agent reputation dashboard" />
+    <title>AgentTrust | AI Agent Reputation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
+    <main class="shell">
+      <nav class="topbar" aria-label="Main navigation">
+        <a class="wordmark" href="#top"><span class="wordmark-star" aria-hidden="true">✦</span> AgentTrust</a>
+        <div class="nav-links">
+          <a class="nav-link" href="#agents"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5.5h16v13H4zM8 9h8M8 13h5" /></svg>Registry</a>
+          <a class="nav-link" href="#activity"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 17V7m7 10V4m7 13v-7" /></svg>Activity</a>
+          <a class="nav-cta magnetic" href="#about">How it works <span>↗</span></a>
+        </div>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-copy">
+          <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span><p class="eyebrow">OPEN-SOURCE PROVENANCE</p></div>
+          <h1>Build with<br /><em>confidence.</em><span class="title-sticker">verified ✦</span></h1>
+          <p class="tagline">Know which AI agent sent that pull request. Make every contribution easier to understand, review, and trust.</p>
+          <a class="hero-link magnetic click-sound" href="#agents">Explore the registry <span>↓</span></a>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="art-card art-card-main"><span>✦</span><strong>TRUST<br />THE<br />PROCESS</strong></div>
+          <div class="art-card art-card-note">made visible<br /><small>for every PR</small></div>
+          <div class="art-dot"></div>
+        </div>
+      </header>
+
+      <section class="metrics" aria-label="Trust metrics" id="about">
+        <article class="metric-card interactive-card">
+          <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" /><path d="M5 20c.5-3.2 2.8-5 7-5s6.5 1.8 7 5" /></svg></span>
+          <span class="metric-label">Total agents</span>
+          <strong id="total-agents">—</strong>
+        </article>
+        <article class="metric-card interactive-card">
+          <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19 19 5M10 5h9v9" /></svg></span>
+          <span class="metric-label">Total pull requests</span>
+          <strong id="total-prs">—</strong>
+        </article>
+        <article class="metric-card interactive-card">
+          <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+          <span class="metric-label">Verified pull requests</span>
+          <strong id="verified-prs">—</strong>
+        </article>
+        <article class="metric-card interactive-card">
+          <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 4 2.4 4.8 5.3.8-3.8 3.7.9 5.2-4.8-2.5-4.8 2.5.9-5.2-3.8-3.7 5.3-.8z" /></svg></span>
+          <span class="metric-label">Average score</span>
+          <strong id="average-score">—</strong>
+        </article>
+      </section>
+
+      <section class="panel" id="agents">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">REPUTATION REGISTRY</p>
+            <h2>Registered agents</h2>
+            <p class="section-description">A quick view of agent reliability across submitted work.</p>
+          </div>
+          <span id="agent-count" class="record-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Agent</th>
+                <th>Identifier</th>
+                <th>Score</th>
+                <th>Total PRs</th>
+                <th>Merged</th>
+                <th>Rejected</th>
+              </tr>
+            </thead>
+            <tbody id="agents-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="activity">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">ACTIVITY STREAM</p>
+            <h2>Recent pull requests</h2>
+            <p class="section-description">The latest activity linked to the reputation registry.</p>
+          </div>
+          <span id="pr-count" class="record-count"></span>
+        </div>
+        <div id="pull-requests" class="pr-list"></div>
+      </section>
+
+      <p id="load-error" class="load-error" role="alert" hidden></p>
+    </main>
+    <script src="script.js" defer></script>
+  </body>
+</html>
