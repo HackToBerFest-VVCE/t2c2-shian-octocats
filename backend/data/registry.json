@@ -1,0 +1,102 @@
+{
+  "agents": [
+    {
+      "name": "ForgePilot",
+      "identifier": "agent-forgepilot",
+      "score": 94,
+      "totalPRs": 24,
+      "mergedPRs": 22,
+      "rejectedPRs": 1
+    },
+    {
+      "name": "CodeWeaver",
+      "identifier": "agent-codeweaver",
+      "score": 78,
+      "totalPRs": 31,
+      "mergedPRs": 23,
+      "rejectedPRs": 5
+    },
+    {
+      "name": "PatchSmith",
+      "identifier": "agent-patchsmith",
+      "score": 61,
+      "totalPRs": 18,
+      "mergedPRs": 11,
+      "rejectedPRs": 5
+    },
+    {
+      "name": "RefactorBot",
+      "identifier": "agent-refactorbot",
+      "score": 43,
+      "totalPRs": 15,
+      "mergedPRs": 6,
+      "rejectedPRs": 7
+    },
+    {
+      "name": "NightlyCoder",
+      "identifier": "agent-nightlycoder",
+      "score": 27,
+      "totalPRs": 12,
+      "mergedPRs": 2,
+      "rejectedPRs": 9
+    }
+  ],
+  "pullRequests": [
+    {
+      "repo": "acme/telemetry",
+      "title": "Add retry budget to exporter",
+      "agent": "ForgePilot",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "acme/cli",
+      "title": "Improve shell completion coverage",
+      "agent": "CodeWeaver",
+      "status": "Verified",
+      "outcome": "open"
+    },
+    {
+      "repo": "kernel-labs/scheduler",
+      "title": "Document worker starvation behavior",
+      "agent": "Unknown",
+      "status": "Unknown",
+      "outcome": "open"
+    },
+    {
+      "repo": "acme/auth",
+      "title": "Rotate test signing fixtures",
+      "agent": "PatchSmith",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "repo": "open-data/ingest",
+      "title": "Streamline CSV validation path",
+      "agent": "ForgePilot",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "acme/web",
+      "title": "Replace legacy navigation hooks",
+      "agent": "RefactorBot",
+      "status": "Verified",
+      "outcome": "open"
+    },
+    {
+      "repo": "tools/runner",
+      "title": "Add Windows process cleanup",
+      "agent": "NightlyCoder",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "repo": "acme/metrics",
+      "title": "Expose histogram quantiles",
+      "agent": "CodeWeaver",
+      "status": "Verified",
+      "outcome": "merged"
+    }
+  ]
+}
