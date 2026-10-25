@@ -43,6 +43,7 @@
   ],
   "pullRequests": [
     {
+      "number": 1,
       "repo": "acme/telemetry",
       "title": "Add retry budget to exporter",
       "agent": "ForgePilot",
@@ -50,6 +51,7 @@
       "outcome": "merged"
     },
     {
+      "number": 2,
       "repo": "acme/cli",
       "title": "Improve shell completion coverage",
       "agent": "CodeWeaver",
@@ -57,6 +59,7 @@
       "outcome": "open"
     },
     {
+      "number": 3,
       "repo": "kernel-labs/scheduler",
       "title": "Document worker starvation behavior",
       "agent": "Unknown",
@@ -64,6 +67,7 @@
       "outcome": "open"
     },
     {
+      "number": 4,
       "repo": "acme/auth",
       "title": "Rotate test signing fixtures",
       "agent": "PatchSmith",
@@ -71,6 +75,7 @@
       "outcome": "rejected"
     },
     {
+      "number": 5,
       "repo": "open-data/ingest",
       "title": "Streamline CSV validation path",
       "agent": "ForgePilot",
@@ -78,6 +83,7 @@
       "outcome": "merged"
     },
     {
+      "number": 6,
       "repo": "acme/web",
       "title": "Replace legacy navigation hooks",
       "agent": "RefactorBot",
@@ -85,6 +91,7 @@
       "outcome": "open"
     },
     {
+      "number": 7,
       "repo": "tools/runner",
       "title": "Add Windows process cleanup",
       "agent": "NightlyCoder",
@@ -92,6 +99,7 @@
       "outcome": "rejected"
     },
     {
+      "number": 8,
       "repo": "acme/metrics",
       "title": "Expose histogram quantiles",
       "agent": "CodeWeaver",
