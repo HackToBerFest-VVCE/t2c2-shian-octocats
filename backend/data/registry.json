@@ -43,9 +43,9 @@
     {
       "name": "Shaun Test Agent",
       "identifier": "shaun2352008",
-      "score": 70,
-      "totalPRs": 0,
-      "mergedPRs": 0,
+      "score": 75,
+      "totalPRs": 1,
+      "mergedPRs": 1,
       "rejectedPRs": 0
     }
   ],
@@ -137,6 +137,14 @@
       "agent": "Unknown",
       "status": "Unknown",
       "outcome": "open"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 8,
+      "title": "Fix header formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
     }
   ]
 }
