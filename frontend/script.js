@@ -47,7 +47,7 @@ function renderAgents(agents) {
   elements.agentsTable.innerHTML = agents
     .map(
       (agent) => `
-        <tr>
+        <tr class="agent-card">
           <td class="agent-name"><span class="agent-avatar" aria-hidden="true">✦</span>${escapeHtml(agent.name)}</td>
           <td class="identifier">${escapeHtml(agent.identifier)}</td>
           <td><span class="score-badge ${scoreClass(agent.score)}">${agent.score}</span></td>
@@ -58,6 +58,31 @@ function renderAgents(agents) {
       `
     )
     .join("");
+
+  enableAgentCardInteractions();
+}
+
+function enableAgentCardInteractions() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  document.querySelectorAll(".agent-card").forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const bounds = card.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      card.style.setProperty("--card-rotate-x", `${y * -3}deg`);
+      card.style.setProperty("--card-rotate-y", `${x * 4}deg`);
+      card.style.setProperty("--shadow-x", `${x * -12}px`);
+      card.style.setProperty("--shadow-y", `${12 + y * 8}px`);
+    });
+
+    card.addEventListener("pointerleave", () => {
+      card.style.removeProperty("--card-rotate-x");
+      card.style.removeProperty("--card-rotate-y");
+      card.style.removeProperty("--shadow-x");
+      card.style.removeProperty("--shadow-y");
+    });
+  });
 }
 
 function renderPullRequests(pullRequests) {
