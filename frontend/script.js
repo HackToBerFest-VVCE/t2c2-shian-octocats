@@ -29,6 +29,16 @@ function scoreClass(score) {
   return "score-low";
 }
 
+function setLoadingState() {
+  elements.agentsTable.innerHTML = '<tr><td class="table-state" colspan="6">Loading agent scores...</td></tr>';
+  elements.pullRequests.innerHTML = '<p class="list-state">Loading recent pull requests...</p>';
+}
+
+function setEmptyState() {
+  elements.agentsTable.innerHTML = '<tr><td class="table-state" colspan="6">No agents to display.</td></tr>';
+  elements.pullRequests.innerHTML = '<p class="list-state">No pull requests to display.</p>';
+}
+
 function renderMetrics(agents, pullRequests) {
   const verified = pullRequests.filter((pullRequest) => pullRequest.status === "Verified").length;
   const average = agents.length
@@ -44,13 +54,26 @@ function renderMetrics(agents, pullRequests) {
 }
 
 function renderAgents(agents) {
+  if (!agents.length) {
+    setEmptyState();
+    return;
+  }
+
   elements.agentsTable.innerHTML = agents
     .map(
       (agent) => `
         <tr class="agent-card">
           <td class="agent-name"><span class="agent-avatar" aria-hidden="true">✦</span>${escapeHtml(agent.name)}</td>
           <td class="identifier">${escapeHtml(agent.identifier)}</td>
-          <td><span class="score-badge ${scoreClass(agent.score)}">${agent.score}</span></td>
+          <td>
+            <div class="score-ring ${scoreClass(agent.score)}" data-score="${agent.score}" role="img" aria-label="Score ${agent.score} out of 100">
+              <svg viewBox="0 0 42 42" aria-hidden="true">
+                <circle class="score-ring-track" cx="21" cy="21" r="17"></circle>
+                <circle class="score-ring-progress" cx="21" cy="21" r="17"></circle>
+              </svg>
+              <span>${agent.score}</span>
+            </div>
+          </td>
           <td>${agent.totalPRs}</td>
           <td>${agent.mergedPRs}</td>
           <td>${agent.rejectedPRs}</td>
@@ -60,6 +83,28 @@ function renderAgents(agents) {
     .join("");
 
   enableAgentCardInteractions();
+  animateScoreRings();
+}
+
+function animateScoreRings() {
+  const circumference = 2 * Math.PI * 17;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll(".score-ring").forEach((ring) => {
+    const progress = ring.querySelector(".score-ring-progress");
+    const target = Number(ring.dataset.score);
+    progress.style.strokeDasharray = `${circumference}`;
+
+    if (reducedMotion) {
+      progress.style.strokeDashoffset = `${circumference * (1 - target / 100)}`;
+      return;
+    }
+
+    progress.style.strokeDashoffset = `${circumference}`;
+    requestAnimationFrame(() => {
+      progress.style.strokeDashoffset = `${circumference * (1 - target / 100)}`;
+    });
+  });
 }
 
 function enableAgentCardInteractions() {
@@ -86,9 +131,15 @@ function enableAgentCardInteractions() {
 }
 
 function renderPullRequests(pullRequests) {
+  if (!pullRequests.length) {
+    setEmptyState();
+    return;
+  }
+
   elements.pullRequests.innerHTML = pullRequests
     .map((pullRequest) => {
       const tagClass = pullRequest.status === "Verified" ? "tag-verified" : "tag-unknown";
+      const outcomeClass = `outcome-${String(pullRequest.outcome).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
       return `
         <article class="pr-item">
           <div>
@@ -96,8 +147,8 @@ function renderPullRequests(pullRequests) {
             <p class="pr-title">${escapeHtml(pullRequest.title)}</p>
           </div>
           <div class="pr-meta">
-            <span class="tag ${tagClass}"><span class="status-dot" aria-hidden="true"></span>${escapeHtml(pullRequest.status)}</span>
-            <span class="outcome"><span class="outcome-icon" aria-hidden="true">↗</span>${escapeHtml(pullRequest.outcome)}</span>
+            <span class="tag ${tagClass}"><span class="status-dot" aria-hidden="true"></span>${escapeHtml(pullRequest.status === "Verified" ? "Verified" : "Unknown")}</span>
+            <span class="outcome ${outcomeClass}"><span class="outcome-icon" aria-hidden="true">↗</span>${escapeHtml(pullRequest.outcome)}</span>
           </div>
         </article>
       `;
@@ -118,6 +169,10 @@ async function loadDashboard() {
     return data;
   }
 
+  if (!elements.agentsTable.children.length && !elements.pullRequests.children.length) {
+    setLoadingState();
+  }
+
   try {
     const data = USE_MOCK_DATA
       ? await loadMockData()
@@ -134,6 +189,11 @@ async function loadDashboard() {
 
     if (!Array.isArray(data.agents) || !Array.isArray(data.pullRequests)) {
       throw new Error("Server data must contain agents and pull requests arrays");
+    }
+
+    if (!data.agents.length && !data.pullRequests.length) {
+      setEmptyState();
+      return;
     }
 
     preserveSelection(() => {

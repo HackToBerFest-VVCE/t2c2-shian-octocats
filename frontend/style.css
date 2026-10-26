@@ -606,12 +606,6 @@ tbody tr.agent-card:hover {
   font-weight: 750;
 }
 
-.score-badge {
-  min-width: 48px;
-  justify-content: center;
-  padding: 6px 9px;
-}
-
 .score-high {
   background: var(--forest-soft);
   color: var(--forest);
@@ -625,6 +619,67 @@ tbody tr.agent-card:hover {
 .score-low {
   background: #ead5d5;
   color: var(--red);
+}
+
+.score-ring {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  color: var(--forest);
+}
+
+.score-ring svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.score-ring circle {
+  fill: none;
+  stroke-width: 4;
+}
+
+.score-ring-track {
+  stroke: currentColor;
+  opacity: 0.16;
+}
+
+.score-ring-progress {
+  stroke: currentColor;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.score-ring span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.score-ring.score-high,
+.score-ring.score-medium {
+  color: #806313;
+  background: transparent;
+}
+
+.score-ring.score-high {
+  color: var(--forest);
+}
+
+.score-ring.score-low {
+  color: var(--red);
+  background: transparent;
+}
+
+.table-state,
+.list-state {
+  padding: 28px;
+  color: var(--muted);
+  text-align: center;
 }
 
 .pr-list {
@@ -697,6 +752,27 @@ tbody tr.agent-card:hover {
   font-size: 0.9rem;
 }
 
+.outcome {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #e7dfd1;
+}
+
+.outcome-open {
+  background: #e7dfd1;
+  color: var(--muted);
+}
+
+.outcome-merged {
+  background: var(--forest-soft);
+  color: var(--forest);
+}
+
+.outcome-rejected {
+  background: #ead5d5;
+  color: var(--red);
+}
+
 .load-error {
   margin: 20px 0 0;
   color: var(--red);
@@ -731,6 +807,10 @@ tbody tr.agent-card:hover {
   tbody tr.agent-card,
   tbody tr.agent-card:hover {
     transform: none;
+  }
+
+  .score-ring-progress {
+    transition: none;
   }
 }
 
