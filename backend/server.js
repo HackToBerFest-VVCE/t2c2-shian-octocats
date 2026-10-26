@@ -2,9 +2,10 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import fs from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { App } from "octokit";
+import { getAgents, getPRs } from "./registry.js";
+import { handlePRClosed } from "./handlers/closed.js";
+import { handlePROpened } from "./handlers/opened.js";
 
 const app = new App({
   appId: process.env.APP_ID,
@@ -13,23 +14,21 @@ const app = new App({
 });
 const server = express();
 const port = process.env.PORT || 3000;
-const registryPath = join(dirname(fileURLToPath(import.meta.url)), "data", "registry.json");
 
 server.use(cors());
 
-// Resolve registry data relative to this module, regardless of the launch directory.
-const readRegistry = () => JSON.parse(fs.readFileSync(registryPath, "utf8"));
-
-app.webhooks.on("pull_request.opened", ({ payload }) => {
+app.webhooks.on("pull_request.opened", async ({ payload, octokit }) => {
   console.log(
     `PR opened by ${payload.pull_request.user.login} in ${payload.repository.full_name} #${payload.pull_request.number}`,
   );
+  await handlePROpened(payload, octokit);
 });
 
-app.webhooks.on("pull_request.closed", ({ payload }) => {
+app.webhooks.on("pull_request.closed", async ({ payload, octokit }) => {
   console.log(
     `PR closed by ${payload.pull_request.user.login}, merged: ${payload.pull_request.merged}`,
   );
+  await handlePRClosed(payload, octokit);
 });
 
 server.get("/", (_request, response) => {
@@ -37,11 +36,11 @@ server.get("/", (_request, response) => {
 });
 
 server.get("/api/agents", (_request, response) => {
-  response.json(readRegistry().agents);
+  response.json(getAgents());
 });
 
 server.get("/api/prs", (_request, response) => {
-  response.json(readRegistry().pullRequests);
+  response.json(getPRs());
 });
 
 // Keep raw parsing scoped to the signed GitHub webhook payload.
