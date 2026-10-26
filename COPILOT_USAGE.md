@@ -44,3 +44,30 @@
 - Prompt: Add a compact four-step “How AgentTrust works” section explaining the path from an agent PR to registry checks, labels and scores, and outcome-driven score updates.
 - What Copilot produced: A responsive four-step explainer section placed below the hero using the existing panel styling.
 - What I checked or fixed: Reloaded the page, confirmed all four steps, metrics, five score rings, five agents, and eight pull requests, and captured `docs/copilot-screenshots/dashboard-how-it-works.png`.
+
+## Shaun: backend
+
+### 1. Licence and project setup
+- Prompt: "Create an MIT LICENSE file in the root of this repo for 2026... then add "type": "module" and a "start" script to backend/package.json."
+- What Copilot produced: the LICENSE file and the package.json changes, in one run.
+- What I checked: that the licence showed up in GitHub's sidebar, and I fixed the "license" field in package.json from ISC to MIT so it matches.
+
+### 2. Express server and registry data
+- Prompt: "Look at frontend/mock-data.json. Create backend/data/registry.json with the same agents and pullRequests, and create backend/server.js using Express with /api/agents and /api/prs..."
+- What Copilot produced: server.js, registry.json, and it tested all three routes itself (21 steps).
+- What I checked: I started the server and opened /api/agents and /api/prs in Chrome to see the real data.
+
+### 3. GitHub App webhook listener
+- Prompt: "In backend/server.js, add GitHub App webhook support with the octokit package... POST /webhook with signature verification..."
+- What Copilot produced: the webhook route with raw-body parsing and the pull_request.opened and closed handlers.
+- What I checked: I opened a test PR on a practice repo and saw "PR opened by shaun2352008" in my terminal. A secret mismatch gave me a signature error at first, which I fixed by making the secret in .env match the App settings.
+
+### 4. PR labeling (opened.js)
+- Prompt: "First read registry.js and closed.js... create handlers/opened.js that looks up the PR author, adds the label agenttrust: verified or agenttrust: unknown, and posts a comment with the score..."
+- What Copilot produced: opened.js, plus opened.test.js with tests.
+- What I checked: my PR got "agenttrust: verified" with a score comment, and my partner's PR got "agenttrust: unknown".
+
+### 5. Wiring handlers into the server
+- Prompt: "In backend/server.js, import handlePROpened and handlePRClosed and call them from the webhook events..."
+- What Copilot produced: the wiring, with the /api routes now reading from registry.js, and 12 passing tests.
+- What I checked: I merged a PR (score 70 to 75) and closed one without merging (score down to 65) and watched the dashboard update.

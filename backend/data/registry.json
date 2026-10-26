@@ -44,9 +44,9 @@
       "name": "Shaun Test Agent",
       "identifier": "shaun2352008",
       "score": 70,
-      "totalPRs": 0,
-      "mergedPRs": 0,
-      "rejectedPRs": 0
+      "totalPRs": 3,
+      "mergedPRs": 2,
+      "rejectedPRs": 1
     }
   ],
   "pullRequests": [
@@ -142,6 +142,30 @@
       "repo": "shaun2352008/agenttrust-playground",
       "number": 8,
       "title": "Fix header formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 10,
+      "title": "Fix heading formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 11,
+      "title": "Fix README title formatting",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 13,
+      "title": "Fix README header formatting",
       "agent": "Shaun Test Agent",
       "status": "Verified",
       "outcome": "merged"
