@@ -43,9 +43,9 @@
     {
       "name": "Shaun Test Agent",
       "identifier": "shaun2352008",
-      "score": 75,
-      "totalPRs": 1,
-      "mergedPRs": 1,
+      "score": 70,
+      "totalPRs": 0,
+      "mergedPRs": 0,
       "rejectedPRs": 0
     }
   ],
