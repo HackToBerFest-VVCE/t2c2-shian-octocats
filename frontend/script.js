@@ -1,3 +1,5 @@
+const USE_MOCK_DATA = false;
+const API_URL = "http://localhost:3000";
 const DATA_URL = "mock-data.json";
 
 const elements = {
@@ -79,26 +81,118 @@ function renderPullRequests(pullRequests) {
 }
 
 async function loadDashboard() {
-  try {
+  async function loadMockData() {
     const response = await fetch(DATA_URL);
-    if (!response.ok) throw new Error(`Data request failed with status ${response.status}`);
+    if (!response.ok) throw new Error(`Mock data request failed with status ${response.status}`);
 
     const data = await response.json();
     if (!Array.isArray(data.agents) || !Array.isArray(data.pullRequests)) {
       throw new Error("Mock data must contain agents and pullRequests arrays");
     }
 
-    renderMetrics(data.agents, data.pullRequests);
-    renderAgents(data.agents);
-    renderPullRequests(data.pullRequests);
+    return data;
+  }
+
+  try {
+    const data = USE_MOCK_DATA
+      ? await loadMockData()
+      : await Promise.all([
+          fetch(`${API_URL}/api/agents`).then((response) => {
+            if (!response.ok) throw new Error(`Agents request failed with status ${response.status}`);
+            return response.json();
+          }),
+          fetch(`${API_URL}/api/prs`).then((response) => {
+            if (!response.ok) throw new Error(`Pull requests request failed with status ${response.status}`);
+            return response.json();
+          })
+        ]).then(([agents, pullRequests]) => ({ agents, pullRequests }));
+
+    if (!Array.isArray(data.agents) || !Array.isArray(data.pullRequests)) {
+      throw new Error("Server data must contain agents and pull requests arrays");
+    }
+
+    preserveSelection(() => {
+      renderMetrics(data.agents, data.pullRequests);
+      renderAgents(data.agents);
+      renderPullRequests(data.pullRequests);
+    });
   } catch (error) {
-    elements.loadError.hidden = false;
-    elements.loadError.textContent = `Unable to load dashboard data: ${error.message}`;
-    console.error(error);
+    if (USE_MOCK_DATA) {
+      elements.loadError.hidden = false;
+      elements.loadError.textContent = `Unable to load dashboard data: ${error.message}`;
+      console.error(error);
+      return;
+    }
+
+    try {
+      const data = await loadMockData();
+      preserveSelection(() => {
+        renderMetrics(data.agents, data.pullRequests);
+        renderAgents(data.agents);
+        renderPullRequests(data.pullRequests);
+      });
+      elements.loadError.hidden = false;
+      elements.loadError.textContent = `Unable to load live dashboard data: ${error.message} Showing mock data instead.`;
+      console.error(error);
+    } catch (fallbackError) {
+      elements.loadError.hidden = false;
+      elements.loadError.textContent = `Unable to load dashboard data: ${error.message}. Mock fallback also failed: ${fallbackError.message}`;
+      console.error(error);
+      console.error(fallbackError);
+    }
   }
 }
 
+function preserveSelection(render) {
+  const controls = [...document.querySelectorAll("select, input")].map((control) => ({
+    control,
+    value: control.value,
+    checked: control.checked
+  }));
+  const activeElement = document.activeElement;
+
+  render();
+
+  controls.forEach(({ control, value, checked }) => {
+    if (!control.isConnected) return;
+    control.value = value;
+    control.checked = checked;
+  });
+
+  if (activeElement instanceof HTMLElement && activeElement.isConnected) {
+    activeElement.focus();
+  }
+}
+
+async function refreshDashboard() {
+  await loadDashboard();
+}
+
 loadDashboard();
+
+if (!USE_MOCK_DATA) {
+  let refreshInterval;
+
+  function startRefreshing() {
+    if (!refreshInterval) refreshInterval = setInterval(refreshDashboard, 5000);
+  }
+
+  function stopRefreshing() {
+    clearInterval(refreshInterval);
+    refreshInterval = undefined;
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopRefreshing();
+    } else {
+      refreshDashboard();
+      startRefreshing();
+    }
+  });
+
+  startRefreshing();
+}
 
 function enableInteractions() {
   const glow = document.querySelector(".cursor-glow");
