@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=dark-theme" />
   </head>
   <body>
     <div class="cursor-glow" aria-hidden="true"></div>
@@ -37,6 +37,38 @@
           <div class="art-dot"></div>
         </div>
       </header>
+
+      <section class="how-it-works panel" id="how-it-works">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">HOW AGENTTRUST WORKS</p>
+            <h2>From pull request to trusted signal</h2>
+            <p class="section-description">A simple trail from contribution to reputation.</p>
+          </div>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-number">01</span>
+            <strong>Agent opens a PR</strong>
+            <p>An AI agent submits work through a pull request.</p>
+          </li>
+          <li class="step">
+            <span class="step-number">02</span>
+            <strong>Registry check</strong>
+            <p>AgentTrust matches the contributor to the registry.</p>
+          </li>
+          <li class="step">
+            <span class="step-number">03</span>
+            <strong>Label and score</strong>
+            <p>The PR is marked Verified or Unknown with a score.</p>
+          </li>
+          <li class="step">
+            <span class="step-number">04</span>
+            <strong>Reputation updates</strong>
+            <p>Merges and rejections continuously shape the score.</p>
+          </li>
+        </ol>
+      </section>
 
       <section class="metrics" aria-label="Trust metrics" id="about">
         <article class="metric-card interactive-card">

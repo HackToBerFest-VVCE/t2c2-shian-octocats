@@ -227,13 +227,52 @@ tbody tr:hover {
 
 .hero {
   position: relative;
+  isolation: isolate;
   min-height: 390px;
   align-items: center;
+  perspective: 1100px;
+}
+
+.hero::before {
+  position: absolute;
+  z-index: -2;
+  top: 3%;
+  right: -8%;
+  width: 68%;
+  height: 92%;
+  border: 1px solid rgba(124, 38, 56, 0.18);
+  background:
+    linear-gradient(rgba(124, 38, 56, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 38, 56, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(214, 168, 46, 0.2), transparent 62%);
+  background-size: 34px 34px, 34px 34px, 100% 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 70px rgba(124, 38, 56, 0.08);
+  content: "";
+  opacity: 0.8;
+  transform: perspective(700px) rotateX(62deg) rotateZ(-8deg) translateY(28%);
+  transform-origin: center;
+  animation: grid-drift 16s linear infinite;
+}
+
+.hero::after {
+  position: absolute;
+  z-index: -1;
+  top: 10%;
+  right: 12%;
+  width: 300px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 168, 46, 0.2), transparent 68%);
+  content: "";
+  filter: blur(8px);
+  animation: glow-pulse 7s ease-in-out infinite;
 }
 
 .hero-copy {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  transform: translateZ(55px);
 }
 
 .brand { display: flex; align-items: center; gap: 10px; }
@@ -322,10 +361,12 @@ h2 {
 
 .hero-art {
   position: absolute;
+  z-index: 1;
   right: 5%;
   width: 370px;
   height: 350px;
   transition: transform 300ms ease;
+  transform-style: preserve-3d;
 }
 
 .hero-art:hover {
@@ -382,6 +423,60 @@ h2 {
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin: 24px 0 30px;
+}
+
+.how-it-works {
+  margin-top: 24px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 0;
+  padding: 22px 28px 25px;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  min-height: 112px;
+  padding: 0 24px;
+  border-right: 1px solid var(--border);
+}
+
+.step:first-child {
+  padding-left: 0;
+}
+
+.step:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+
+.step-number {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-family: "DM Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.step strong {
+  display: block;
+  margin-bottom: 7px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+}
+
+.step p {
+  max-width: 190px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
 }
 
 .metric-card,
@@ -521,6 +616,17 @@ tbody tr:hover {
   background: #eee2d2;
 }
 
+tbody tr.agent-card {
+  transform: perspective(900px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg));
+  box-shadow: var(--shadow-x, 0) var(--shadow-y, 8px) 18px rgba(53, 29, 32, 0.12);
+  transform-style: preserve-3d;
+  transition: transform 160ms ease-out, box-shadow 160ms ease-out, background-color 180ms ease;
+}
+
+tbody tr.agent-card:hover {
+  transform: perspective(900px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg)) translateZ(5px);
+}
+
 .agent-name {
   display: flex;
   align-items: center;
@@ -554,12 +660,6 @@ tbody tr:hover {
   font-weight: 750;
 }
 
-.score-badge {
-  min-width: 48px;
-  justify-content: center;
-  padding: 6px 9px;
-}
-
 .score-high {
   background: var(--forest-soft);
   color: var(--forest);
@@ -573,6 +673,67 @@ tbody tr:hover {
 .score-low {
   background: #ead5d5;
   color: var(--red);
+}
+
+.score-ring {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  color: var(--forest);
+}
+
+.score-ring svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.score-ring circle {
+  fill: none;
+  stroke-width: 4;
+}
+
+.score-ring-track {
+  stroke: currentColor;
+  opacity: 0.16;
+}
+
+.score-ring-progress {
+  stroke: currentColor;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.score-ring span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.score-ring.score-high,
+.score-ring.score-medium {
+  color: #806313;
+  background: transparent;
+}
+
+.score-ring.score-high {
+  color: var(--forest);
+}
+
+.score-ring.score-low {
+  color: var(--red);
+  background: transparent;
+}
+
+.table-state,
+.list-state {
+  padding: 28px;
+  color: var(--muted);
+  text-align: center;
 }
 
 .pr-list {
@@ -645,9 +806,66 @@ tbody tr:hover {
   font-size: 0.9rem;
 }
 
+.outcome {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #e7dfd1;
+}
+
+.outcome-open {
+  background: #e7dfd1;
+  color: var(--muted);
+}
+
+.outcome-merged {
+  background: var(--forest-soft);
+  color: var(--forest);
+}
+
+.outcome-rejected {
+  background: #ead5d5;
+  color: var(--red);
+}
+
 .load-error {
   margin: 20px 0 0;
   color: var(--red);
+}
+
+@keyframes grid-drift {
+  from { background-position: 0 0, 0 0, center; }
+  to { background-position: 34px 34px, 34px 34px, center; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.94); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero::before,
+  .hero::after {
+    animation: none;
+  }
+
+  .hero-copy,
+  tbody tr.agent-card,
+  tbody tr.agent-card:hover {
+    transform: none;
+  }
+
+  .score-ring-progress {
+    transition: none;
+  }
 }
 
 @media (max-width: 760px) {
@@ -674,6 +892,25 @@ tbody tr:hover {
   .metrics {
     grid-template-columns: repeat(2, 1fr);
     margin-top: 24px;
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 0;
+  }
+
+  .step:nth-child(2) {
+    border-right: 0;
+  }
+
+  .step:nth-child(3),
+  .step:nth-child(4) {
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .step:nth-child(3) {
+    padding-left: 0;
   }
 
   .panel-heading,
@@ -703,4 +940,26 @@ tbody tr:hover {
   .metric-card { min-height: 110px; padding: 16px; }
   .metric-icon { top: 15px; right: 15px; }
   .metric-card strong { font-size: 1.8rem; }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 20px;
+  }
+
+  .step,
+  .step:first-child,
+  .step:last-child,
+  .step:nth-child(3),
+  .step:nth-child(4) {
+    min-height: 0;
+    padding: 16px 0;
+    border-right: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .step:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
 }
