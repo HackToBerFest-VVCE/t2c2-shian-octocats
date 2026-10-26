@@ -1,33 +1,64 @@
 import cors from "cors";
-import dotenv from "dotenv";
+import "dotenv/config";
 import express from "express";
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import fs from "node:fs";
+import { App } from "octokit";
+import { getAgents, getPRs } from "./registry.js";
+import { handlePRClosed } from "./handlers/closed.js";
+import { handlePROpened } from "./handlers/opened.js";
 
-dotenv.config();
-
-const app = express();
+const app = new App({
+  appId: process.env.APP_ID,
+  privateKey: fs.readFileSync(process.env.PRIVATE_KEY_PATH, "utf8"),
+  webhooks: { secret: process.env.WEBHOOK_SECRET },
+});
+const server = express();
 const port = process.env.PORT || 3000;
-const registryPath = join(dirname(fileURLToPath(import.meta.url)), "data", "registry.json");
 
-app.use(cors());
+server.use(cors());
 
-// Resolve registry data relative to this module, regardless of the launch directory.
-const readRegistry = () => JSON.parse(readFileSync(registryPath, "utf8"));
+app.webhooks.on("pull_request.opened", async ({ payload, octokit }) => {
+  console.log(
+    `PR opened by ${payload.pull_request.user.login} in ${payload.repository.full_name} #${payload.pull_request.number}`,
+  );
+  await handlePROpened(payload, octokit);
+});
 
-app.get("/", (_request, response) => {
+app.webhooks.on("pull_request.closed", async ({ payload, octokit }) => {
+  console.log(
+    `PR closed by ${payload.pull_request.user.login}, merged: ${payload.pull_request.merged}`,
+  );
+  await handlePRClosed(payload, octokit);
+});
+
+server.get("/", (_request, response) => {
   response.json({ status: "AgentTrust backend is running" });
 });
 
-app.get("/api/agents", (_request, response) => {
-  response.json(readRegistry().agents);
+server.get("/api/agents", (_request, response) => {
+  response.json(getAgents());
 });
 
-app.get("/api/prs", (_request, response) => {
-  response.json(readRegistry().pullRequests);
+server.get("/api/prs", (_request, response) => {
+  response.json(getPRs());
 });
 
-app.listen(port, () => {
+// Keep raw parsing scoped to the signed GitHub webhook payload.
+server.post("/webhook", express.raw({ type: "application/json" }), async (request, response) => {
+  try {
+    await app.webhooks.verifyAndReceive({
+      id: request.headers["x-github-delivery"],
+      name: request.headers["x-github-event"],
+      signature: request.headers["x-hub-signature-256"],
+      payload: request.body.toString(),
+    });
+    response.sendStatus(200);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    response.status(400).send(message);
+  }
+});
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
