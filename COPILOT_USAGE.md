@@ -9,3 +9,38 @@
 - Prompt: Write `backend/registry.test.js` using node:test and node:assert. Before each test, create a temporary JSON file in the operating system's temp folder containing two sample agents and two sample pull requests, and call setDataFile with its path, so the real registry.json is never changed. Test: lookupAgent for a known agent (try different capital letters) and for an unknown one; addPR adds a pull request with outcome "open"; recordOutcome for merged raises the score by 5 and increases mergedPRs; recordOutcome for rejected lowers the score by 10 and increases rejectedPRs; the score never goes above 100 or below 0; and recordOutcome returns null for an unregistered agent.
 - What Copilot produced: An isolated seven-test Node test suite using temporary registry files and coverage for lookup, PR creation, outcomes, score bounds, persistence, and unknown agents.
 - What I checked or fixed: Ran `node --test`; all 7 tests passed with 0 failures, and confirmed the real `backend/data/registry.json` was not used by the tests.
+
+## frontend dashboard API connection
+- Prompt: Connect `frontend/script.js` to the real backend API with a mock-data flag, clear fallback errors, and unchanged agent and pull-request field names.
+- What Copilot produced: Live `/api/agents` and `/api/prs` loading with mock fallback, followed by visibility-aware five-second refreshes that preserve selections.
+- What I checked or fixed: Started the backend, verified both endpoints returned data, checked the dashboard rendered live values, tested a score change from 94 to 99, captured `docs/copilot-screenshots/dashboard-api-connect.png`, and restored `backend/data/registry.json`.
+
+## frontend visual redesign
+- Prompt: Redesign the frontend with a professional dark theme, then restore the previous color pattern when requested.
+- What Copilot produced: A visual redesign pass followed by restoration of the cream, burgundy, mustard, and forest palette while preserving the existing layout and data behavior.
+- What I checked or fixed: Reloaded the page, verified metrics, registry rows, pull-request activity, and mobile rendering, and captured `docs/copilot-screenshots/dashboard-visual-redesign.png`.
+
+## frontend auto-refresh
+- Prompt: Refetch live agents and pull requests every five seconds, preserve selections, stop while the page is hidden, test a registry score change, and restore the data file.
+- What Copilot produced: Visibility-aware polling with immediate resume behavior and selection preservation across rerenders.
+- What I checked or fixed: Changed ForgePilot from 94 to 99, observed the dashboard update within five seconds, captured the refreshed dashboard, and ran `git restore backend/data/registry.json`.
+
+## frontend palette adjustment
+- Prompt: Use the same color pattern as the previous dashboard.
+- What Copilot produced: Restored the cream, burgundy, mustard, and forest palette without changing the new layout or data logic.
+- What I checked or fixed: Reloaded the page, confirmed metrics and activity still rendered, captured `docs/copilot-screenshots/dashboard-visual-redesign.png`, and committed the palette-only change.
+
+## frontend 3D depth
+- Prompt: Add CSS and plain-JavaScript 3D depth, mouse-driven agent-card tilt, moving shadows, a layered hero grid, and reduced-motion support without breaking the dashboard.
+- What Copilot produced: Perspective hover interactions for agent rows, a layered animated hero grid, and a `prefers-reduced-motion` override.
+- What I checked or fixed: Verified hover rotation and shadow variables, confirmed five agent rows and eight pull requests, checked reduced-motion disables animations, and captured `docs/copilot-screenshots/dashboard-3d-after.png`.
+
+## frontend score visuals
+- Prompt: Show agent scores as animated green, yellow, or red circular progress rings, add Verified or Unknown pills, colored outcome tags, and loading/empty states.
+- What Copilot produced: Animated score rings that update on refresh, status pills, open/merged/rejected outcome tags, and explicit loading and empty states.
+- What I checked or fixed: Verified ring targets and color classes for all five agents, all eight PR tags, reduced-motion final values, and captured `docs/copilot-screenshots/dashboard-score-rings.png`.
+
+## frontend judge story
+- Prompt: Add a compact four-step “How AgentTrust works” section explaining the path from an agent PR to registry checks, labels and scores, and outcome-driven score updates.
+- What Copilot produced: A responsive four-step explainer section placed below the hero using the existing panel styling.
+- What I checked or fixed: Reloaded the page, confirmed all four steps, metrics, five score rings, five agents, and eight pull requests, and captured `docs/copilot-screenshots/dashboard-how-it-works.png`.
