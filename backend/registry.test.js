@@ -89,8 +89,28 @@ describe("addPR", () => {
 
     assert.equal(pullRequest.outcome, "open");
     assert.equal(getPRs().at(-1).outcome, "open");
+    assert.equal("lane" in pullRequest, false);
+    assert.equal("reasons" in pullRequest, false);
     assert.equal(getPRs().length, 3);
     assert.match(await readFile(dataFile, "utf8"), /Replace navigation hooks/);
+  });
+
+  it("stores optional lane and reasons", () => {
+    const reasons = ["The pull request is a draft."];
+    const pullRequest = addPR({
+      repo: "acme/web",
+      number: 4,
+      title: "Add draft support",
+      agent: "ForgePilot",
+      status: "Verified",
+      lane: "hold",
+      reasons
+    });
+
+    assert.equal(pullRequest.lane, "hold");
+    assert.deepEqual(pullRequest.reasons, reasons);
+    assert.equal(getPRs().at(-1).lane, "hold");
+    assert.deepEqual(getPRs().at(-1).reasons, reasons);
   });
 });
 

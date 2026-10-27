@@ -44,9 +44,18 @@ export function lookupAgent(login) {
 }
 
 // Add an open pull request and save the updated registry.
-export function addPR({ repo, number, title, agent, status }) {
+export function addPR({ repo, number, title, agent, status, lane, reasons }) {
   const registry = readRegistry();
-  const pullRequest = { repo, number, title, agent, status, outcome: "open" };
+  const pullRequest = {
+    repo,
+    number,
+    title,
+    agent,
+    status,
+    outcome: "open",
+    ...(lane !== undefined ? { lane } : {}),
+    ...(reasons !== undefined ? { reasons } : {}),
+  };
 
   registry.pullRequests.push(pullRequest);
   saveRegistry(registry);
