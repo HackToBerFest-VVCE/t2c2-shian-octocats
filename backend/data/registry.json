@@ -1,0 +1,174 @@
+{
+  "agents": [
+    {
+      "name": "ForgePilot",
+      "identifier": "agent-forgepilot",
+      "score": 94,
+      "totalPRs": 24,
+      "mergedPRs": 22,
+      "rejectedPRs": 1
+    },
+    {
+      "name": "CodeWeaver",
+      "identifier": "agent-codeweaver",
+      "score": 78,
+      "totalPRs": 31,
+      "mergedPRs": 23,
+      "rejectedPRs": 5
+    },
+    {
+      "name": "PatchSmith",
+      "identifier": "agent-patchsmith",
+      "score": 61,
+      "totalPRs": 18,
+      "mergedPRs": 11,
+      "rejectedPRs": 5
+    },
+    {
+      "name": "RefactorBot",
+      "identifier": "agent-refactorbot",
+      "score": 43,
+      "totalPRs": 15,
+      "mergedPRs": 6,
+      "rejectedPRs": 7
+    },
+    {
+      "name": "NightlyCoder",
+      "identifier": "agent-nightlycoder",
+      "score": 27,
+      "totalPRs": 12,
+      "mergedPRs": 2,
+      "rejectedPRs": 9
+    },
+    {
+      "name": "Shaun Test Agent",
+      "identifier": "shaun2352008",
+      "score": 70,
+      "totalPRs": 3,
+      "mergedPRs": 2,
+      "rejectedPRs": 1
+    }
+  ],
+  "pullRequests": [
+    {
+      "number": 1,
+      "repo": "acme/telemetry",
+      "title": "Add retry budget to exporter",
+      "agent": "ForgePilot",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "number": 2,
+      "repo": "acme/cli",
+      "title": "Improve shell completion coverage",
+      "agent": "CodeWeaver",
+      "status": "Verified",
+      "outcome": "open"
+    },
+    {
+      "number": 3,
+      "repo": "kernel-labs/scheduler",
+      "title": "Document worker starvation behavior",
+      "agent": "Unknown",
+      "status": "Unknown",
+      "outcome": "open"
+    },
+    {
+      "number": 4,
+      "repo": "acme/auth",
+      "title": "Rotate test signing fixtures",
+      "agent": "PatchSmith",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "number": 5,
+      "repo": "open-data/ingest",
+      "title": "Streamline CSV validation path",
+      "agent": "ForgePilot",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "number": 6,
+      "repo": "acme/web",
+      "title": "Replace legacy navigation hooks",
+      "agent": "RefactorBot",
+      "status": "Verified",
+      "outcome": "open"
+    },
+    {
+      "number": 7,
+      "repo": "tools/runner",
+      "title": "Add Windows process cleanup",
+      "agent": "NightlyCoder",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "number": 8,
+      "repo": "acme/metrics",
+      "title": "Expose histogram quantiles",
+      "agent": "CodeWeaver",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 5,
+      "title": "Fix README header formatting",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 6,
+      "title": "Fix header formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 7,
+      "title": "Fix formatting of README header",
+      "agent": "Unknown",
+      "status": "Unknown",
+      "outcome": "open"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 8,
+      "title": "Fix header formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 10,
+      "title": "Fix heading formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 11,
+      "title": "Fix README title formatting",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "rejected"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 13,
+      "title": "Fix README header formatting",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "merged"
+    }
+  ]
+}
