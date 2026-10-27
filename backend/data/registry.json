@@ -44,9 +44,9 @@
       "name": "Shaun Test Agent",
       "identifier": "shaun2352008",
       "score": 70,
-      "totalPRs": 3,
-      "mergedPRs": 2,
-      "rejectedPRs": 1
+      "totalPRs": 0,
+      "mergedPRs": 0,
+      "rejectedPRs": 0
     }
   ],
   "pullRequests": [
@@ -169,6 +169,50 @@
       "agent": "Shaun Test Agent",
       "status": "Verified",
       "outcome": "merged"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 19,
+      "title": "Fix header formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "open"
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 20,
+      "title": "Fix header formatting in README.md",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "open",
+      "lane": "fast-track",
+      "reasons": [
+        "The agent, change size, files, description, and tests meet fast-track criteria."
+      ]
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 21,
+      "title": "Add initial test workflow configuration",
+      "agent": "Shaun Test Agent",
+      "status": "Verified",
+      "outcome": "open",
+      "lane": "careful",
+      "reasons": [
+        "The pull request touches .github/workflows."
+      ]
+    },
+    {
+      "repo": "shaun2352008/agenttrust-playground",
+      "number": 22,
+      "title": "Fix formatting of README header",
+      "agent": "Unknown",
+      "status": "Unknown",
+      "outcome": "open",
+      "lane": "careful",
+      "reasons": [
+        "The pull request author is not a registered agent."
+      ]
     }
   ]
 }
